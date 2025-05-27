@@ -57,115 +57,121 @@ values
 ( 4, 5, '2022-10-11', 1, 800.00),
 ( 5, 6, '2022-12-29', 4, 1000.00);
 
-
+--1. Select all columns from the Employees table. 
 select * 
 from business.employees_table et;
 
+--2. Select the first names of all employees. 
 select et.first_name 
 from business.employees_table et ;
 
+--3. Select distinct departments from the Employees table. 
 select distinct et.department
 from business.employees_table et ;
 
+--4. Select the total number of employees. 
 select count(*) 
 from business.employees_table;
 
+--5.Select the total salary paid to all employees. 
 select sum(salary) 
 from business.employees_table;
 
+--6. Select the average salary of all employees.
 select avg(salary) 
 from  business.employees_table;
 
+--7. Select the highest salary in the Employees table. 
 select max(salary) as maximumsalary 
 from business.employees_table;
 
+--8. Select the lowest salary in the Employees table. 
 select min(salary) as  minimumsalary
 from business.employees_table;
 
+--9. Select the total number of male employees. 
 select count(*)
 from business.employees_table
 where gender = 'Male';
 
+--10. Select the total number of female employees. 
 select count(*) 
 from business.employees_table 
 where gender = 'Female';
 
-
+--11. Select the total number of employees hired in the year 2020. 
 select count(*) as total_employees_2020
 from business.employees_table
 where extract (year from hiredate) = 2020;
 
-
+--12. Select the average salary of employees in the 'IT' department. 
 select avg(salary) as avgsalary
 from business.employees_table
 where department = 'IT';
 
+--13. Select the number of employees in each department. 
 select department, count(*) as num_employees
 from business.employees_table 
 group by department;
 
-
+--14. Select the total salary paid to employees in each department. 
 select department, sum(salary) as total_salary
 from business.employees_table 
 group by department;
 
-
+--15. Select the maximum salary in each department. 
 select department, max(salary) as max_salary
 from business.employees_table
 group by department;
 
-
+--16. Select the minimum salary in each department. 
 select department, min(salary) as min_salary
 from business.employees_table
 group by department;
 
-
+--17. Select the total number of employees, grouped by gender. 
 select gender, count(*) as num_employees
 from business.employees_table
 group by gender;
 
-
+--18. Select the average salary of employees, grouped by gender. 
 select gender, avg(salary) as avg_salary
 from business.employees_table
 group by gender;
 
-
+--19. Select the top 5 highest-paid employees. 
 select *
 from business.employees_table
 order by salary desc
 limit 5;
 
-
+--20. Select the total number of unique first names in the Employees table. 
 select count(distinct firstname) as unique_first_names
 from business.employees_table ;
 
 
-
+--21. Select all employees and their corresponding sales 
 select et.*, s.*
 from business.employees_table et
 left join business.sales s
 on et.employee_id = s.employee_id;
 
 
-
-
+--22. Select the first 10 employees hired, ordered by their HireDate.
 select *
 from business.employees_table et 
 order by hiredate asc
 limit 10;
 
 
-
-select *
+--23. Select the employees who have not made any sales. 
+select et.*
 from business.employees_table et
 left join business.sales s
 on et.employee_id = s.employee_id
 where s.sale_id is null;
 
-
-
-
-
+--24. Select the total number of sales made by each employee. 
 select et.employee_id, et.firstname, et.lastname, count(s.sale_id) as total_sales
 from business.employees_table et
 left join business.sales s
@@ -173,7 +179,7 @@ on et.employee_id = s.employee_id
 group by et.employee_id, et.firstname, et.lastname;
 
 
-
+--25. Select the employee who made the highest total sales. 
 select et.*
 from business.employees_table et
 join (
@@ -184,14 +190,14 @@ join (
     limit 1
 ) s on et.employee_id = s.employee_id;
 
-
+--26. Select the average quantity of products sold by employees in each department. 
 select et.department, avg(s.quantity) as avg_quantity
 from business.employees_table et 
 join business.sales s on et.employee_id = s.employee_id
 group by et.department;
 
 
-
+--27. Select the total sales made by each employee in the year 2021. 
 select et.employee_id, et.firstname, et.lastname, sum(s.total) as total_sales_2021
 from business.employees_table et  
 join business.sales s on et.employee_id = s.employee_id
@@ -199,7 +205,7 @@ where extract (YEAR from s.sale_date) = 2021
 group by et.employee_id, et.firstname, et.lastname;
 
 
-
+--28. Select the top 3 employees with the most sales in terms of quantity. 
 select et.employee_id, et.firstname, et.lastname, sum(s.quantity) as total_quantity
 from business.employees_table et 
 join business.sales s on et.employee_id = s.employee_id
@@ -207,15 +213,14 @@ group by et.employee_id, et.firstname, et.lastname
 order by total_quantity desc
 limit 3;
 
-
+--29. Select the total quantity of products sold by each department.
 select et.department, sum(s.quantity) as total_quantity
 from business.employees_table et 
 join business.sales s on et.employee_id = s.employee_id
 group by et.department;
 
 
-
-
+--30. Select the total revenue generated by sales of products in each category.
 select p.category, sum(s.total) as total_revenue
 from business.sales s
 join business.products p on s.product_id = p.product_id
